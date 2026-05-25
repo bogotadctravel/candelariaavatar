@@ -17,7 +17,8 @@ import { Toaster } from '@/components/livekit/toaster';
 import { useTranslation } from '@/hooks/use-translation';
 import { useAgentErrors } from '@/hooks/useAgentErrors';
 import { useDebugMode } from '@/hooks/useDebug';
-import { useLanguage, type Lang } from '@/lib/language-context'; // ajusta la ruta
+import { type Lang, useLanguage } from '@/lib/language-context';
+// ajusta la ruta
 // import { useLanguage } from '@/lib/language-context';
 import numberCountry from '@/lib/numberCountry.json';
 import { getSandboxTokenSource } from '@/lib/utils';
@@ -215,7 +216,9 @@ export function App({ appConfig }: AppProps) {
     if (!isFormSubmitted) return null;
     console.log('metadata: ', userMetadata);
     console.log(typeof process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT);
-    return typeof process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT === 'string'
+    const sandboxEndpoint = process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT?.trim();
+
+    return sandboxEndpoint
       ? getSandboxTokenSource(appConfig)
       : TokenSource.endpoint(
           `/api/connection-details?user_id=${userMetadata.user_id}&user_name=${userMetadata.user_name}&user_phone=${userMetadata.user_phone}&lang=${lang}`
@@ -250,12 +253,7 @@ export function App({ appConfig }: AppProps) {
 
   if (!isFormSubmitted || !tokenSource) {
     return (
-      <div className="bg-[url('/background-img-avatar.png')] bg-opacity-50 bg-background 
-            bg-cover bg-center 
-            overflow-y-auto p-4 
-            min-h-screen
-            font-[Helvetica,sans-serif]"
-            >
+      <div className="bg-opacity-50 bg-background min-h-screen overflow-y-auto bg-[url('/background-img-avatar.png')] bg-cover bg-center p-4 font-[Helvetica,sans-serif]">
         <div className="fixed top-0 right-0 left-0 z-50 flex items-center justify-center bg-[#264892] px-4 py-2">
           <img
             src="/idt_a2.png"
@@ -264,14 +262,11 @@ export function App({ appConfig }: AppProps) {
           />
         </div>
 
-
-
         <div
           ref={formRef}
           className="mx-auto w-full max-w-[2236px] rounded-lg p-10"
           style={{ position: 'relative' }}
         >
-
           <div className="relative top-[40px] left-[40px]">
             <img
               src="/avatarfront.jpg"
@@ -280,49 +275,41 @@ export function App({ appConfig }: AppProps) {
             />
           </div>
 
-
-          <div className="mx-auto mt-[1%] rounded-[30px] bg-white p-14 pb-6 pt-2">
-
+          <div className="mx-auto mt-[1%] rounded-[30px] bg-white p-14 pt-2 pb-6">
             <div className="">
-              
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="top-16 right-4 flex gap-4 text-black mb-1">
-
-                <div className="w-full flex flex-row items-center justify-end z-2">
-                  <img
-                    src="/world-icon.png"
-                    alt="Candelaria"
-                    className="w-4"
-                  />
-                  <select
-                    value={lang}
-                    onChange={(e) => setLang(e.target.value as 'es' | 'en')}
-                    className="rounded-xl border-none px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="es">Español</option>
-                    <option value="en">English</option>
-                  </select>
+                <div className="top-16 right-4 mb-1 flex gap-4 text-black">
+                  <div className="z-2 flex w-full flex-row items-center justify-end">
+                    <img src="/world-icon.png" alt="Candelaria" className="w-4" />
+                    <select
+                      value={lang}
+                      onChange={(e) => setLang(e.target.value as 'es' | 'en')}
+                      className="rounded-xl border-none px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    >
+                      <option value="es">Español</option>
+                      <option value="en">English</option>
+                    </select>
+                  </div>
                 </div>
-             
-                </div>
-                <p className="mb-2 font-bold text-2xl">{t('title')}</p>
-                <div className="flex gap-2 mb-2">
+                <p className="mb-2 text-2xl font-bold">{t('title')}</p>
+                <div className="mb-2 flex gap-2">
                   <div className="w-1/4">
-                  <select
-                    id="documentType"
-                    name="documentType"
-                    value={userMetadata.documentType}
-                    onChange={handleInputChange}
-                    className="h-full w-full rounded-md border p-1 text-lg"
-                  >
-                    <option disabled value="">
-                      Indicativo
-                    </option>
-                    {numberCountry.map((country, index) => (
-                      <option key={index} value={country.dial_code}>
-                        {`${country.flag} ${country.dial_code}`}
+                    <select
+                      id="documentType"
+                      name="documentType"
+                      value={userMetadata.documentType}
+                      onChange={handleInputChange}
+                      className="h-full w-full rounded-md border p-1 text-lg"
+                    >
+                      <option disabled value="">
+                        Indicativo
                       </option>
-                    ))}
-                  </select>
+                      {numberCountry.map((country, index) => (
+                        <option key={index} value={country.dial_code}>
+                          {`${country.flag} ${country.dial_code}`}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="flex-1">
                     <input
@@ -339,7 +326,7 @@ export function App({ appConfig }: AppProps) {
                   </div>
                 </div>
 
-                <div className='mb-2'>
+                <div className="mb-2">
                   <input
                     type="text"
                     id="user_name"
@@ -466,8 +453,8 @@ export function App({ appConfig }: AppProps) {
                   </div>
                 )}
 
-                <div className="space-y-2 mb-1">
-                  <div className="flex items-center gap-2 mb-1">
+                <div className="mb-1 space-y-2">
+                  <div className="mb-1 flex items-center gap-2">
                     <input
                       type="checkbox"
                       checked={acceptTerms}
@@ -486,7 +473,7 @@ export function App({ appConfig }: AppProps) {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="mb-2 flex items-center gap-2">
                     <input
                       type="checkbox"
                       checked={acceptPolicies}
@@ -509,22 +496,19 @@ export function App({ appConfig }: AppProps) {
                 <button
                   type="submit"
                   disabled={disabledButton}
-                  className={`w-full rounded-lg px-4 py-1 text-white text-lg ${disabledButton ? 'cursor-not-allowed bg-gray-400' : 'bg-[#264892] hover:bg-blue-700'}`}
+                  className={`w-full rounded-lg px-4 py-1 text-lg text-white ${disabledButton ? 'cursor-not-allowed bg-gray-400' : 'bg-[#264892] hover:bg-blue-700'}`}
                 >
                   {t('start')}
                 </button>
               </form>
             </div>
 
-            <div className='mt-2'>
-            <p className="text-[12px] text-[#00000] leading-[14px] font-medium">{t('finalAccept')}</p>
+            <div className="mt-2">
+              <p className="text-[12px] leading-[14px] font-medium text-[#00000]">
+                {t('finalAccept')}
+              </p>
+            </div>
           </div>
-
-          </div>
-
-
-                      
-
         </div>
 
         {showModal && (
@@ -626,10 +610,7 @@ export function App({ appConfig }: AppProps) {
   return (
     <SessionProvider session={session}>
       <AppSetup />
-      <main className="grid h-svh grid-cols-1 place-content-center bg-[url('/background-img-avatar.png')] bg-opacity-50 bg-background 
-            bg-cover bg-center 
-            overflow-y-auto p-4 
-            min-h-screen">
+      <main className="bg-opacity-50 bg-background grid h-svh min-h-screen grid-cols-1 place-content-center overflow-y-auto bg-[url('/background-img-avatar.png')] bg-cover bg-center p-4">
         <ViewController appConfig={appConfig} />
       </main>
       <StartAudio label="Start Audio" />
