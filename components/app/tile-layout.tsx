@@ -44,7 +44,13 @@ const classNames = {
   // chatOpen: false
   // layout: Column 1 / Row 1 / Column-Span 2 / Row-Span 3
   // align: x-center y-center
-  agentChatClosed: ['col-start-1 row-start-1', 'col-span-2 row-span-3', 'place-content-center'],
+  agentChatClosed: [
+    'col-start-1 row-start-1',
+    'col-span-2 row-span-3',
+    'place-content-start',
+    'justify-center',
+    'mt-[35%]',
+  ],
   // Second tile
   // chatOpen: true,
   // hasSecondTile: true
@@ -123,7 +129,7 @@ export function TileLayout({ chatOpen }: TileLayoutProps) {
                     delay: animationDelay,
                   }}
                   className={cn(
-                    'bg-background aspect-square h-[90px] rounded-md border border-transparent transition-[border,drop-shadow]',
+                    'bg-background aspect-square h-[90px] rounded-md border border-transparent transition-[border,drop-shadow] mt-50',
                     chatOpen && 'border-input/50 drop-shadow-lg/10 delay-200'
                   )}
                 >
@@ -175,7 +181,7 @@ export function TileLayout({ chatOpen }: TileLayoutProps) {
                   }}
                   className={cn(
                     'overflow-hidden bg-black drop-shadow-xl/80',
-                    chatOpen ? 'mt-[320px] h-[200px] w-[200px]' : 'h-auto w-full'
+                    chatOpen ? 'mt-[510px] h-[200px] w-[200px]' : 'h-auto w-full'
                   )}
                 >
                   <VideoTrack

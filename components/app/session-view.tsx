@@ -49,7 +49,7 @@ export function Fade({ top = false, bottom = false, className }: FadeProps) {
       <div className="z-[2000] mt-[50px] flex justify-between gap-4 pr-[20px]">
         <div className="w-1/3"></div>
         <div className="w-1/3">
-          <img src="/idt_a.png" alt="Logo" className="h-25 rounded-lg object-contain" />
+          {/* <img src="/idt_a.png" alt="Logo" className="h-25 rounded-lg object-contain" /> */}
         </div>
       </div>
     </>
@@ -98,16 +98,16 @@ export const SessionView = ({
         <Fade top className="absolute inset-x-4 h-[30px]" />
 
         {/* MÁSCARA */}
-        <div className="bg-[linear-gradient(to_bottom,theme(colors.background)_0%,theme(colors.background)_85%,transparent_95%)] pointer-events-none absolute top-0 left-0 z-20 h-[400px] w-full" />
+        <div className=" pointer-events-none absolute top-0 left-0 z-20 h-[540px] w-full" />
 
         <ScrollArea
           ref={scrollAreaRef}
-          className="px-4 pt-[355px] pb-[150px] md:px-6 md:pb-[200px]"
+          className="px-4 pt-[470px] pb-[150px] md:px-6 md:pb-[200px] [mask-image:linear-gradient(to_bottom,transparent_0%,transparent_400px,black_470px)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,transparent_400px,black_470px)]"
         >
           <ChatTranscript
             hidden={!chatOpen}
             messages={messages}
-            className="mx-auto max-w-2xl space-y-3 transition-opacity duration-300 ease-out"
+            className="mx-auto max-w-2xl space-y-3 transition-opacity duration-300 ease-out bg-white/80 p-4 rounded-[30px]"
           />
         </ScrollArea>
       </div>
@@ -118,12 +118,12 @@ export const SessionView = ({
       {/* Bottom */}
       <MotionBottom
         {...BOTTOM_VIEW_MOTION_PROPS}
-        className="fixed inset-x-3 bottom-[60px] z-50 md:inset-x-12"
+        className="fixed inset-x-3 top-[60px] z-50 mt-[10%] md:inset-x-12"
       >
         {appConfig.isPreConnectBufferEnabled && (
           <PreConnectMessage messages={messages} className="pb-4" />
         )}
-        <div className="bg-background relative mx-auto max-w-2xl pb-3 md:pb-12">
+        <div className="bg-background relative mx-auto max-w-2xl md:pb-12 rounded-[30px] w-[80%]">
           {/* <Fade bottom className="absolute inset-x-0 top-0 h-4 -translate-y-full" /> */}
           <AgentControlBar
             controls={controls}

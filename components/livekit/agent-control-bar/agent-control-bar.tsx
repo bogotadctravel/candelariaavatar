@@ -7,6 +7,7 @@ import { ChatTextIcon, PhoneDisconnectIcon } from '@phosphor-icons/react/dist/ss
 import { TrackToggle } from '@/components/livekit/agent-control-bar/track-toggle';
 import { Button } from '@/components/livekit/button';
 import { Toggle } from '@/components/livekit/toggle';
+import { useLanguage } from '@/lib/language-context';
 import { cn } from '@/lib/utils';
 import { ChatInput } from './chat-input';
 import { UseInputControlsProps, useInputControls } from './hooks/use-input-controls';
@@ -77,6 +78,8 @@ export function AgentControlBar({
   };
 
   const isAgentAvailable = participants.some((p) => p.isAgent);
+
+  const { lang } = useLanguage();
 
   return (
     <div
@@ -162,8 +165,8 @@ export function AgentControlBar({
             className="font-mono"
           >
             <PhoneDisconnectIcon weight="bold" />
-            <span className="hidden md:inline">FINALIZAR</span>
-            <span className="inline md:hidden">FIN</span>
+            <span className="hidden md:inline">{lang === 'es' ? 'FINALIZAR' : 'END CALL'}</span>
+            <span className="inline md:hidden">{lang === 'es' ? 'FIN' : 'END'}</span>
           </Button>
         )}
       </div>

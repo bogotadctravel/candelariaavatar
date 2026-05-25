@@ -28,11 +28,12 @@ export default async function handler(
 
     const agentName = 'avatar-idt-candelaria';
 
-    const { user_id, user_name, user_phone } = req.query;
+    const { user_id, user_name, user_phone, lang } = req.query;
 
     console.log(`user_ids:${user_id}`);
     console.log(`user_names:${user_name}`);
     console.log(`user_phones:${user_phone}`);
+    console.log(`lang:${lang}`);
 
     const participantName = 'user';
     const participantIdentity = `voice_assistant_user_${Math.floor(Math.random() * 10_000)}`;
@@ -44,7 +45,8 @@ export default async function handler(
       agentName,
       user_id as string | undefined,
       user_name as string | undefined,
-      user_phone as string | undefined
+      user_phone as string | undefined,
+      lang as string | undefined
     );
 
     return res.status(200).json({
@@ -65,7 +67,8 @@ function createParticipantToken(
   agentName?: string,
   user_id?: string,
   user_name?: string,
-  user_phone?: string
+  user_phone?: string,
+  lang?: string
 ): Promise<string> {
   const at = new AccessToken(API_KEY!, API_SECRET!, {
     ...userInfo,
@@ -91,6 +94,7 @@ function createParticipantToken(
             user_id,
             user_name,
             user_phone,
+            lang,
           }),
         }),
       ],
