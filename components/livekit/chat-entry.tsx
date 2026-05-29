@@ -16,6 +16,60 @@ export interface ChatEntryProps extends React.HTMLAttributes<HTMLLIElement> {
   hasBeenEdited?: boolean;
 }
 
+function eliminarJsonArray(texto: string): string {
+  const inicio = texto.indexOf('[');
+
+  if (inicio === -1) {
+    return texto;
+  }
+
+  let nivel = 0;
+  let dentroString = false;
+  let escape = false;
+
+  for (let i = inicio; i < texto.length; i++) {
+    const char = texto[i];
+
+    if (escape) {
+      escape = false;
+      continue;
+    }
+
+    if (char === '\\') {
+      escape = true;
+      continue;
+    }
+
+    if (char === '"') {
+      dentroString = !dentroString;
+      continue;
+    }
+
+    if (!dentroString) {
+      if (char === '[') nivel++;
+      if (char === ']') nivel--;
+
+      if (nivel === 0) {
+        const posibleJson = texto.slice(inicio, i + 1);
+
+        try {
+          const parsed = JSON.parse(posibleJson);
+
+          if (Array.isArray(parsed)) {
+            return (texto.slice(0, inicio) + texto.slice(i + 1)).trim();
+          }
+        } catch {
+          // No era JSON válido
+        }
+
+        break;
+      }
+    }
+  }
+
+  return texto;
+}
+
 export const ChatEntry = ({
   name,
   locale,
@@ -54,7 +108,7 @@ export const ChatEntry = ({
           messageOrigin === 'local' ? 'bg-muted ml-auto p-2' : 'mr-auto'
         )}
       >
-        {message}
+        {eliminarJsonArray(message)}
       </span>
     </li>
   );

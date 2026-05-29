@@ -44,7 +44,7 @@ export function AgentControlBar({
 }: AgentControlBarProps & HTMLAttributes<HTMLDivElement>) {
   const { send } = useChat();
   const participants = useRemoteParticipants();
-  const [chatOpen, setChatOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(true);
   const publishPermissions = usePublishPermissions();
   const {
     micTrackRef,
@@ -78,6 +78,7 @@ export function AgentControlBar({
   };
 
   const isAgentAvailable = participants.some((p) => p.isAgent);
+  //   const isAgentAvailable = true;
 
   const { lang } = useLanguage();
 

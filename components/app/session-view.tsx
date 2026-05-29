@@ -66,7 +66,7 @@ export const SessionView = ({
 }: React.ComponentProps<'section'> & SessionViewProps) => {
   const session = useSessionContext();
   const { messages } = useSessionMessages(session);
-  const [chatOpen, setChatOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(true);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const controls: ControlBarControls = {
@@ -98,16 +98,16 @@ export const SessionView = ({
         <Fade top className="absolute inset-x-4 h-[30px]" />
 
         {/* MÁSCARA */}
-        <div className=" pointer-events-none absolute top-0 left-0 z-20 h-[540px] w-full" />
+        <div className="pointer-events-none absolute top-0 left-0 z-20 h-[540px] w-full" />
 
         <ScrollArea
           ref={scrollAreaRef}
-          className="px-4 pt-[470px] pb-[150px] md:px-6 md:pb-[200px] [mask-image:linear-gradient(to_bottom,transparent_0%,transparent_400px,black_470px)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,transparent_400px,black_470px)]"
+          className="[mask-image:linear-gradient(to_bottom,transparent_0%,transparent_400px,black_470px)] px-4 pt-[470px] pb-[150px] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,transparent_400px,black_470px)] md:px-6 md:pb-[200px]"
         >
           <ChatTranscript
             hidden={!chatOpen}
             messages={messages}
-            className="mx-auto max-w-2xl space-y-3 transition-opacity duration-300 ease-out bg-white/80 p-4 rounded-[30px]"
+            className="mx-auto max-w-2xl space-y-3 rounded-[30px] bg-white/80 p-4 transition-opacity duration-300 ease-out"
           />
         </ScrollArea>
       </div>
@@ -123,7 +123,7 @@ export const SessionView = ({
         {appConfig.isPreConnectBufferEnabled && (
           <PreConnectMessage messages={messages} className="pb-4" />
         )}
-        <div className="bg-background relative mx-auto max-w-2xl md:pb-12 rounded-[30px] w-[80%]">
+        <div className="bg-background relative mx-auto w-[80%] max-w-2xl rounded-[30px]">
           {/* <Fade bottom className="absolute inset-x-0 top-0 h-4 -translate-y-full" /> */}
           <AgentControlBar
             controls={controls}
