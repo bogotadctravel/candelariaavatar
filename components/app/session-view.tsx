@@ -13,6 +13,7 @@ import {
 } from '@/components/livekit/agent-control-bar/agent-control-bar';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '../livekit/scroll-area/scroll-area';
+import { ScrollAreaStatic } from '../livekit/scroll-area/scroll-area-static';
 
 const MotionBottom = motion.create('div');
 
@@ -77,14 +78,14 @@ export const SessionView = ({
     screenShare: appConfig.supportsVideoInput,
   };
 
-  useEffect(() => {
-    const lastMessage = messages.at(-1);
-    const lastMessageIsLocal = lastMessage?.from?.isLocal === true;
+  //   useEffect(() => {
+  //     const lastMessage = messages.at(-1);
+  //     const lastMessageIsLocal = lastMessage?.from?.isLocal === true;
 
-    if (scrollAreaRef.current && lastMessageIsLocal) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
-    }
-  }, [messages]);
+  //     if (scrollAreaRef.current && lastMessageIsLocal) {
+  //       scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+  //     }
+  //   }, [messages]);
 
   return (
     <section className="bg-background relative z-10 h-full w-full overflow-hidden" {...props}>
@@ -100,16 +101,16 @@ export const SessionView = ({
         {/* MÁSCARA */}
         <div className="pointer-events-none absolute top-0 left-0 z-20 h-[540px] w-full" />
 
-        <ScrollArea
+        <ScrollAreaStatic
           ref={scrollAreaRef}
-          className="[mask-image:linear-gradient(to_bottom,transparent_0%,transparent_400px,black_470px)] px-4 pt-[470px] pb-[150px] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,transparent_400px,black_470px)] md:px-6 md:pb-[200px]"
+          className="[mask-image:linear-gradient(to_bottom,transparent_0%,transparent_460px,black_520px)] px-4 pt-[510px] pb-[85px] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,transparent_460px,black_520px)] md:px-6 md:pb-[120px]"
         >
           <ChatTranscript
             hidden={!chatOpen}
             messages={messages}
             className="mx-auto max-w-2xl space-y-3 rounded-[30px] bg-white/80 p-4 transition-opacity duration-300 ease-out"
           />
-        </ScrollArea>
+        </ScrollAreaStatic>
       </div>
 
       {/* Tile Layout */}

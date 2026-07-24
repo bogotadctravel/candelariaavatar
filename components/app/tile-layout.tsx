@@ -129,7 +129,7 @@ export function TileLayout({ chatOpen }: TileLayoutProps) {
                     delay: animationDelay,
                   }}
                   className={cn(
-                    'bg-background aspect-square h-[90px] rounded-md border border-transparent transition-[border,drop-shadow] mt-50',
+                    'bg-background mt-50 aspect-square h-[90px] rounded-md border border-transparent transition-[border,drop-shadow]',
                     chatOpen && 'border-input/50 drop-shadow-lg/10 delay-200'
                   )}
                 >
@@ -181,14 +181,14 @@ export function TileLayout({ chatOpen }: TileLayoutProps) {
                   }}
                   className={cn(
                     'overflow-hidden bg-black drop-shadow-xl/80',
-                    chatOpen ? 'mt-[510px] h-[200px] w-[200px]' : 'h-auto w-full'
+                    chatOpen ? 'mt-[550px] h-[280px] w-[280px]' : 'h-auto w-full'
                   )}
                 >
                   <VideoTrack
                     width={videoWidth}
                     height={videoHeight}
                     trackRef={agentVideoTrack}
-                    className={cn(chatOpen && 'size-[200px] object-cover')}
+                    className={cn(chatOpen && 'size-[280px] object-cover')}
                   />
                 </MotionContainer>
               )}

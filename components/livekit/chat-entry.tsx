@@ -105,7 +105,7 @@ export const ChatEntry = ({
       <span
         className={cn(
           'max-w-4/5 rounded-[20px]',
-          messageOrigin === 'local' ? 'bg-muted ml-auto p-2' : 'mr-auto'
+          messageOrigin === 'local' ? 'bg-muted ml-auto p-2' : 'mr-auto bg-[#26489214] p-[0.5rem]'
         )}
       >
         {eliminarJsonArray(message)}

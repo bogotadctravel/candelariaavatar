@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { AnimatePresence, type HTMLMotionProps, motion } from 'motion/react';
 import { type ReceivedMessage } from '@livekit/components-react';
 import { ChatEntry } from '@/components/livekit/chat-entry';
@@ -58,27 +59,48 @@ export function ChatTranscript({
   messages = [],
   ...props
 }: ChatTranscriptProps & Omit<HTMLMotionProps<'div'>, 'ref'>) {
+  const lastMessageRef = useRef<HTMLDivElement>(null);
+  const previousLastId = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    const lastMessage = messages.at(-1);
+
+    if (!lastMessage) return;
+
+    if (lastMessage.id !== previousLastId.current) {
+      lastMessageRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+
+      previousLastId.current = lastMessage.id;
+    }
+  }, [messages]);
+
   return (
     <AnimatePresence>
       {!hidden && (
         <MotionContainer {...CONTAINER_MOTION_PROPS} {...props}>
-          {messages.map((receivedMessage) => {
+          {messages.map((receivedMessage, index) => {
             const { id, timestamp, from, message } = receivedMessage;
             const locale = navigator?.language ?? 'en-US';
             const messageOrigin = from?.isLocal ? 'local' : 'remote';
             const hasBeenEdited =
               receivedMessage.type === 'chatMessage' && !!receivedMessage.editTimestamp;
+            const isLast = index === messages.length - 1;
 
             return (
-              <MotionChatEntry
-                key={id}
-                locale={locale}
-                timestamp={timestamp}
-                message={message}
-                messageOrigin={messageOrigin}
-                hasBeenEdited={hasBeenEdited}
-                {...MESSAGE_MOTION_PROPS}
-              />
+              <div key={id} ref={isLast ? lastMessageRef : undefined}>
+                <MotionChatEntry
+                  // key={id}
+                  locale={locale}
+                  timestamp={timestamp}
+                  message={message}
+                  messageOrigin={messageOrigin}
+                  hasBeenEdited={hasBeenEdited}
+                  {...MESSAGE_MOTION_PROPS}
+                />
+              </div>
             );
           })}
         </MotionContainer>
